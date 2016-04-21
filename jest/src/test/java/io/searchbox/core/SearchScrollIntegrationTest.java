@@ -1,16 +1,18 @@
 package io.searchbox.core;
 
 import com.google.gson.JsonArray;
-import io.searchbox.client.JestResult;
-import io.searchbox.common.AbstractIntegrationTest;
-import io.searchbox.core.search.sort.Sort;
-import io.searchbox.params.Parameters;
+
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.test.ESIntegTestCase;
 import org.junit.Test;
 
 import java.io.IOException;
+
+import io.searchbox.client.JestResult;
+import io.searchbox.common.AbstractIntegrationTest;
+import io.searchbox.core.search.sort.Sort;
+import io.searchbox.params.Parameters;
 
 
 /**
@@ -74,7 +76,9 @@ public class SearchScrollIntegrationTest extends AbstractIntegrationTest {
                 result.getJsonObject().getAsJsonObject("hits").getAsJsonArray("hits").size()
         );
 
-        clearScroll(scrollId);
+        ClearScroll clearScroll = new ClearScroll.Builder(scrollId).build();
+        result = client.execute(clearScroll);
+        assertTrue(result.getErrorMessage(), result.isSucceeded());
     }
 
 }
